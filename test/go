@@ -1,0 +1,43 @@
+#!/bin/sh
+
+XML=/home/dladams/ups/genie_xsec/v2_8_6a/NULL/default/data/gxspl-FNALsmall.xml
+PROC=1000060120
+OUT=gntp.0.ghep.root
+
+if [ ! -r $XML ]; then
+  echo
+  echo
+  echo Spline file not found!: $XML
+fi
+
+if [ ! -r $OUT ]; then
+  echo
+  echo
+  echo Making events...
+  gevgen -n 100 -p 14 -t $PROC -e 0,15 -e 3 --cross-sections $XML 2>&1 | tee gen.log
+fi
+
+echo
+echo
+DUMPLOG=dump.txt
+if [ -r $OUT ]; then
+  if [ ! -r $DUMPLOG ]; then
+    echo Dumping events to $DUMPLOG...
+    gevdump -f $OUT -n 1,10 >$DUMPLOG
+  fi
+else
+  echo Event file $OUT not found
+fi
+
+echo
+echo
+HEPEVTOUT=hepevt.txt
+if [ -r $OUT ]; then
+  if [ ! -r $HEPEVTOUT ]; then
+    echo Converting to HEPEVT in $HEPEVTOUT
+    ../bin/g2hepmc $OUT >$HEPEVTOUT
+  fi
+else
+  echo Event file $OUT not found
+fi
+

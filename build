@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# Check for dependent product variables.
+for VNAME in GENIE GENIE_INC ROOTSYS PYTHIA6_LIBRARY LOG4CPP_FQ_DIR; do
+  VAL=`eval "echo \$$VNAME"`
+  eval "VAL=\${$VNAME}"
+  if [ -z "$VAL" ]; then
+    echo Variable $VNAME must be defined!
+    exit 1
+  fi
+  if [ -n "$DBG" ]; then
+    echo $VNAME = $VAL
+  fi
+done
+
+GENIELIBS=`$GENIE/src/scripts/setup/genie-config --libs`
+ROOTLIBS=`root-config --glibs`" -lGeom -lEGPythia6"
+
+# Create the build area.
+if [ ! -r bin ]; then
+  mkdir bin
+fi
+
+g++ src/g2hepmc.cxx \
+    -I $GENIE_INC/GENIE $GENIELIBS \
+    -I $ROOTSYS/include $ROOTLIBS \
+    -L $PYTHIA6_LIBRARY -lPythia6 \
+    -L $LOG4CPP_FQ_DIR/lib -llog4cpp \
+    -l xml2 \
+    -o bin/g2hepmc
