@@ -32,10 +32,12 @@ fi
 echo
 echo
 HEPEVTOUT=hepevt.txt
+HEPEVTLOG=hepevt.log
+rm -f $HEPEVTOUT
 if [ -r $OUT ]; then
   if [ ! -r $HEPEVTOUT ]; then
     echo Converting to HEPEVT in $HEPEVTOUT
-    ../bin/g2hepmc $OUT >$HEPEVTOUT
+    ../bin/g2hepmc $OUT $HEPEVTOUT >$HEPEVTLOG
   fi
 else
   echo Event file $OUT not found
