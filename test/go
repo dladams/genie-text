@@ -23,7 +23,7 @@ DUMPLOG=dump.txt
 if [ -r $OUT ]; then
   if [ ! -r $DUMPLOG ]; then
     echo Dumping events to $DUMPLOG...
-    gevdump -f $OUT -n 1,10 >$DUMPLOG
+    gevdump -f $OUT -n 0,9 >$DUMPLOG
   fi
 else
   echo Event file $OUT not found
@@ -37,7 +37,7 @@ rm -f $HEPEVTOUT
 if [ -r $OUT ]; then
   if [ ! -r $HEPEVTOUT ]; then
     echo Converting to HEPEVT in $HEPEVTOUT
-    ../bin/g2hepmc $OUT $HEPEVTOUT >$HEPEVTLOG
+    ../bin/g2hepmc $OUT $HEPEVTOUT x=50 z=20 >$HEPEVTLOG
   fi
 else
   echo Event file $OUT not found
