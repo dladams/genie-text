@@ -1,9 +1,9 @@
 # genie-text
 
 To build:
-> ./build
+  ./build
 
 To test:
-> cd test
-> ./go
+  cd test
+  ./go
 and then examine hepevt.txt
